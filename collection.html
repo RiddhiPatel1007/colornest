@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collection</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <header class="section-navbar">
+        <section class="container">
+            <div class="navbar_logo">
+                 <!-- <img src="images/logocolornest.png" alt="ColorNest logo"
+                  > -->
+                <img src="images/logocolornest.png" alt="ColorNest logo">
+            </div>
+            <div class="search-menu">
+
+                <div class="inputdiv">
+                   <i class="fa-solid fa-magnifying-glass"></i>
+                     <input type="text" class="inputValue" placeholder="Search palettes">
+                </div>
+
+                 <button class="menu-btn">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                 </button>
+
+            </div>
+            <div id="colorFilters">
+                    <button onclick="filterColor('blue')">Blue</button>
+                    <button onclick="filterColor('red')">Red</button>
+                    <button onclick="filterColor('green')">Green</button>
+                    <button onclick="filterColor('yellow')">Yellow</button>
+                    <button onclick="filterColor('purple')">Purple</button>
+                    <button onclick="filterColor('orange')">Orange</button>
+                    <button onclick="filterColor('pink')">Pink</button>
+                    <button onclick="filterColor('white')">White</button>
+                    <button onclick="filterColor('black')">Black</button>
+                    <button onclick="showAll()">All</button>
+                </div>
+            <div class="navbar">
+                <ul id="mobileMenu">
+                    <li class="nav-item" id="palettesBtn"> 
+                        <a class="nav-link" href="index.html">Palettes</a>
+                    </li>
+                   <li class="nav-item"> 
+                        <a class="nav-link" href="create.html">Create</a>
+                    </li>                   
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="collection.html">Collection</a>
+                    </li>
+                     <li class="nav-item"> 
+                        <a class="nav-link" href="about.html">About</a>
+                    </li> 
+                </ul>
+            </div>
+        </section>
+    </header>
+    <section class="section-collection">
+        <div class="container">
+            <div class="heading">
+                <h2 class="head">my collection</h2>                               
+            </div> 
+            <div id="savedContainer"></div>
+        </div>
+    </section>
+    <script>       
+// showSavedPalettes();
+let savedContainer = document.getElementById("savedContainer");
+
+let savedPalettes =
+JSON.parse(localStorage.getItem("savedPalettes")) || [];
+
+savedPalettes.forEach(colors => {
+
+    let paletteWrapper = document.createElement("div");
+    paletteWrapper.classList.add("palette-wrapper")
+
+    let palette =  document.createElement("div");
+    palette.classList.add("palette");
+
+    // heart icon
+    let like = document.createElement("i");
+    like.className = "fa-solid fa-heart like-btn";
+
+    colors.forEach(color => {
+
+        let box = document.createElement("div");
+        box.classList.add("box");
+
+        box.style.backgroundColor = color;
+
+        let button = document.createElement("button");
+        button.classList.add("code-color");
+        button.textContent = color;
+
+        box.appendChild(button);
+        palette.appendChild(box);
+
+    });
+    // remove from collection
+    like.addEventListener("click", () =>{
+        let savedPalettes = JSON.parse(localStorage.getItem("savedPalettes")) || [];
+
+        savedPalettes = savedPalettes.filter(
+            item => JSON.stringify(item) !== JSON.stringify(colors)
+        );
+
+        localStorage.setItem(
+            "savedPalettes",
+            JSON.stringify(savedPalettes)
+        );
+        paletteWrapper.remove();
+    })
+    paletteWrapper.appendChild(palette);
+    paletteWrapper.appendChild(like);
+
+    savedContainer.appendChild(paletteWrapper);
+
+});
+//  menu section
+const menuBtn = document.querySelector(".menu-btn");
+const mobileMenu = document.getElementById("mobileMenu");
+
+menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("show");
+});
+const searchInput = document.querySelector(".inputValue");
+// copy mate
+savedContainer.addEventListener("click", (e) => {
+
+    if(e.target.classList.contains("code-color")){
+        const colorCode = e.target.textContent;
+        navigator.clipboard.writeText(colorCode)
+        .then(() => {
+            let oldText = e.target.textContent;
+            e.target.textContent = "Copied";
+            setTimeout(() => {
+                e.target.textContent = oldText;
+            }, 1000);
+        })
+        .catch(err => {
+            console.log("Copy Error:", err);
+        });
+    }
+});
+</script>
+</body>
+</html>
