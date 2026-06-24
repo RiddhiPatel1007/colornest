@@ -348,31 +348,27 @@ li{
 }
  /******* saerch section *****/
  
- #colorFilters.show{
-    display: flex;
-    border: none;
-    gap: 10px;
- }
 .inputdiv{
     position: relative;
 }
 
 #colorFilters{
     position: absolute;
-    top: 110%;
+    top: calc(100% + 5px);
     left: 0;
     width: 100%;
     display: none;
-    flex-wrap: wrap;
-    gap: 1rem;
     background: white;
-    padding: 1rem;
-    border-radius: 1rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    -webkit-border-radius:;
-    -moz-border-radius:;
-    -ms-border-radius:;
-    -o-border-radius:;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.15);
+    z-index: 9999;
+}
+
+#colorFilters.show{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 #colorFilters button:nth-child(n){
     border: none;
